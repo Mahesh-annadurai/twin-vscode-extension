@@ -1,0 +1,36 @@
+{
+  "name": "twin",
+  "displayName": "Twin",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "activationEvents": ["*"],
+  "main": "./extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "twinChat",
+          "title": "Twin",
+          "icon": "media/hand_coin_icon_206950.png"
+        }
+      ]
+    },
+    "views": {
+      "twinChat": [
+        {
+          "id": "twinChatView",
+          "name": "Twin Chat",
+          "type": "webview"
+        }
+      ]
+    },
+    "commands": [
+    {
+      "command": "twin.helloWorld",
+      "title": "Hello World"
+    }
+  ]
+  }
+}
