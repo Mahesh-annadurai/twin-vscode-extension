@@ -133,7 +133,7 @@ class TwinChatViewProvider {
 
         history.push({ role, text });
 
-        // Persist to file
+        // Persist file
         this.writeHistoryToFile(history);
 
         // Sync globalState as backup
@@ -203,16 +203,56 @@ const input = document.getElementById('input');
 function renderMessage(role, text) {
     const div = document.createElement('div');
     div.className = 'message';
+
     const html = marked.parse(text);
     div.innerHTML = '<b>' + role + ':</b><br>' + html;
+
+    // Add copy button to each code block
+    div.querySelectorAll('pre').forEach(pre => {
+        const wrapper = document.createElement('div');
+        wrapper.style.position = 'relative';
+
+        const button = document.createElement('button');
+        button.textContent = 'Copy';
+        button.style.cssText =
+    "position: absolute;" +
+    "top: 6px;" +
+    "right: 6px;" +
+    "font-size: 12px;" +
+    "padding: 2px 6px;" +
+    "cursor: pointer;";
+button.style.cssText =
+    "position: absolute;" +
+    "top: 6px;" +
+    "right: 6px;" +
+    "font-size: 12px;" +
+    "padding: 2px 6px;" +
+    "cursor: pointer;";
+
+
+        // Wrap the <pre> so button can sit on top
+        pre.parentNode.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+        wrapper.appendChild(button);
+
+        button.addEventListener('click', () => {
+            const code = pre.innerText;
+            navigator.clipboard.writeText(code);
+            button.textContent = 'Copied';
+            setTimeout(() => (button.textContent = 'Copy'), 1500);
+        });
+    });
+
     chat.appendChild(div);
 
+    // Syntax highlighting
     div.querySelectorAll('pre code').forEach(block => {
         hljs.highlightElement(block);
     });
 
     chat.scrollTop = chat.scrollHeight;
 }
+
 
 input.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && input.value.trim()) {
