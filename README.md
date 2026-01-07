@@ -1,65 +1,123 @@
-# twin README
+Twin – AI Copilot-Style VS Code Extension
 
-This is the README for your extension "twin". After writing up a brief description, we recommend including the following sections.
+Twin is a Copilot-style AI assistant for Visual Studio Code, developed as part of an internship project.
+It provides a sidebar-based chat interface for code generation, explanation, and developer assistance, powered by the Groq LLM.
 
-## Features
+The project focuses on clean architecture, extensibility, and correct state persistence rather than surface-level UI features.
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
+Features
 
-For example if there is an image subfolder under your extension project workspace:
+Sidebar-based chat interface inside Visual Studio Code
 
-\!\[feature X\]\(images/feature-x.png\)
+AI-powered responses using the Groq LLM
 
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+Code generation and explanation capabilities
 
-## Requirements
+Markdown-rendered responses with syntax highlighting
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+Persistent chat history using file-based storage
 
-## Extension Settings
+Chat history restored across VS Code sessions
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
+Clear separation between extension logic and UI logic
 
-For example:
+Tech Stack
 
-This extension contributes the following settings:
+JavaScript (Node.js)
 
-* `myExtension.enable`: Enable/disable this extension.
-* `myExtension.thing`: Set to `blah` to do something.
+Visual Studio Code Extension API
 
-## Known Issues
+VS Code Webviews (HTML, CSS, JavaScript)
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+Groq API (OpenAI-compatible endpoint)
 
-## Release Notes
+marked (Markdown rendering)
 
-Users appreciate release notes as you update your extension.
+highlight.js (Syntax highlighting)
 
-### 1.0.0
+VS Code global storage for persistence
 
-Initial release of ...
+Architecture Overview
 
-### 1.0.1
+The extension follows a message-driven architecture where the UI and extension logic are clearly separated.
 
-Fixed issue #.
+Webview (UI)
+  → postMessage()
+Extension (Node.js)
+  → Groq API
+  → postMessage()
+Webview (Rendered Output)
 
-### 1.1.0
+Persistence Strategy
 
-Added features X, Y, and Z.
+Chat history is stored in a JSON file using context.globalStorageUri
 
----
+globalState is retained as a fallback mechanism
 
-## Working with Markdown
+File-based persistence enables durability across sessions and easier debugging
 
-You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
+Project Structure
+twin/
+├── extension.js          # Extension entry point and core logic
+├── package.json          # Extension manifest
+├── media/                # Icons and assets
+├── .gitignore
+├── README.md
 
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+Cmd+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux, macOS) to see a list of Markdown snippets
+Environment Setup
 
-## For more information
+The extension uses environment variables for API configuration.
 
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
+Set the Groq API key before running the extension:
 
-**Enjoy!**
+Windows (PowerShell)
+set GROQ_API_KEY=your_api_key_here
+
+macOS / Linux
+export GROQ_API_KEY=your_api_key_here
+
+
+API keys are not hardcoded and are excluded from version control.
+
+Running the Extension Locally
+
+Clone the repository
+
+Open the project in Visual Studio Code
+
+Press F5 to launch the Extension Development Host
+
+Open the Twin sidebar from the Activity Bar
+
+Start interacting with the assistant
+
+Current Status
+
+Core extension architecture implemented
+
+Sidebar chat UI completed
+
+Groq LLM integration in place
+
+Markdown rendering and syntax highlighting enabled
+
+File-based chat persistence implemented
+
+Planned Enhancements
+
+Copy button for code blocks
+
+Tool calling support (insert generated code, explain selected code)
+
+Multiple chat sessions
+
+UI and accessibility improvements
+
+Author
+
+Mahesh Annadurai
+This project was developed as part of an internship to explore AI-assisted developer tooling and VS Code extension development.
+
+License
+
+This project is intended for learning and demonstration purposes.
