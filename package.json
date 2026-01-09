@@ -30,7 +30,11 @@
     {
       "command": "twin.helloWorld",
       "title": "Hello World"
-    }
+    },
+      {
+    "command": "twin.explainSelection",
+    "title": "Twin: Explain Selected Code"
+  }
   ]
   }
 }

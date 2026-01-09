@@ -6,8 +6,23 @@ const vscode = require('vscode');
 const fs = require('fs');
 const path = require('path');
 
-// Node 18+ has fetch; fallback for safety
+// fallback for safety
 const fetch = globalThis.fetch || require('node-fetch');
+function buildPrompt(userQuery, context = null) {
+    if (!context) {
+        return userQuery;
+    }
+
+    return `
+Context:
+${context}
+
+User question:
+${userQuery}
+
+Answer strictly based on the given context.
+    `.trim();
+}
 
 /**
  * Call Groq API
@@ -114,8 +129,11 @@ class TwinChatViewProvider {
 
                 // Save user message
                 this.saveMessage('You', message.text);
+                const prompt = buildPrompt(message.text);
 
-                const reply = await callGroq(message.text);
+                // Call Groq API
+
+                const reply = await callGroq(prompt);
 
                 // Save Twin reply
                 this.saveMessage('Twin', reply);
@@ -214,21 +232,13 @@ function renderMessage(role, text) {
 
         const button = document.createElement('button');
         button.textContent = 'Copy';
-        button.style.cssText =
+       button.style.cssText =
     "position: absolute;" +
     "top: 6px;" +
     "right: 6px;" +
     "font-size: 12px;" +
     "padding: 2px 6px;" +
     "cursor: pointer;";
-button.style.cssText =
-    "position: absolute;" +
-    "top: 6px;" +
-    "right: 6px;" +
-    "font-size: 12px;" +
-    "padding: 2px 6px;" +
-    "cursor: pointer;";
-
 
         // Wrap the <pre> so button can sit on top
         pre.parentNode.insertBefore(wrapper, pre);
@@ -295,6 +305,14 @@ function activate(context) {
             provider
         )
     );
+    context.subscriptions.push(
+    vscode.commands.registerCommand('twin.explainSelection', () => {
+        vscode.window.showInformationMessage(
+            'Twin: Explain Selected Code (command wired successfully)'
+        );
+    })
+);
+
 }
 
 function deactivate() {}
