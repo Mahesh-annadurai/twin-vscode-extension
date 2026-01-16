@@ -34,7 +34,12 @@
       {
     "command": "twin.explainSelection",
     "title": "Twin: Explain Selected Code"
-  }
+  },
+  {
+  "command": "twin.explainAndInsert",
+  "title": "Twin: Explain & Insert as Comment"
+}
+
   ]
   }
 }
